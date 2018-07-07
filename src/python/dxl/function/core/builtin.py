@@ -1,11 +1,12 @@
 from collections import UserList
 from .control import Applicative
+from .prelude import Convertable
 from functools import partial
 
 __all__ = ['List']
 
 
-class List(UserList, Applicative):
+class List(UserList, Applicative, Convertable):
     def _inner(self):
         return self.data
 
@@ -17,3 +18,7 @@ class List(UserList, Applicative):
         for f in self.data:
             result += x.fmap(lambda x: partial(f, x))
         return List(result)
+
+    @classmethod
+    def from_(cls, o):
+        return List(o)
