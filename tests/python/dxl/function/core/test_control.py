@@ -25,6 +25,9 @@ def test_fmap_on_functor():
         def __init__(self, data):
             self.data = data
 
+        def _inner(self):
+            return self.data
+
         def fmap(self, f):
             return MyList(list(map(f, self.data)))
 
