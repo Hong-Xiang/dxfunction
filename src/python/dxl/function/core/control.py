@@ -1,5 +1,7 @@
 from abc import ABCMeta, abstractmethod, abstractclassmethod
 from typing import Callable, Union, List, Tuple, Dict
+import collections.abc
+from functools import singledispatch
 
 __all__ = ['Functor', 'fmap', 'Applicative']
 
@@ -19,6 +21,10 @@ class Functor(metaclass=ABCMeta):
 
 FunctorB = Union[Functor, BuiltInFunctor]  # Functor and built-in "Functor"s
 
+
+@singledispatch
+def _fmap(fct, f):
+    pass
 
 def fmap(f: Callable, fct: FunctorB) -> FunctorB:
     if isinstance(fct, Functor):
