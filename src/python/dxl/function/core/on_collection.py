@@ -2,6 +2,8 @@ import collections.abc
 from functools import singledispatch
 from .function import Function
 
+__all__ = ['Take', 'head']
+
 @singledispatch
 def _take(xs, n):
     raise TypeError(f"Can't Take on {type(x)}")

@@ -3,7 +3,7 @@ from typing import Callable, Union, List, Tuple, Dict
 import collections.abc
 from functools import singledispatch
 
-__all__ = ['Functor', 'fmap', 'Applicative']
+__all__ = ['Functor', 'fmap', 'Applicative', 'Monad', 'Monoid']
 
 BuiltInFunctor = Union[List, Tuple, Dict]
 

@@ -2,7 +2,7 @@ from collections import UserList
 from .control import Monad, Applicative, Functor, Monoid
 from functools import partial
 
-__all__ = ['List']
+__all__ = ['List', 'ListFunc']
 
 
 class List(UserList, Functor, Monoid):

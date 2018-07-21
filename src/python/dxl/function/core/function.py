@@ -4,10 +4,7 @@ from .control import Applicative, fmap
 from abc import ABCMeta, abstractmethod
 
 
-__all__ = [
-    'Function', 'WrappedFunction', 'function', 'ChainedFunction', 'identity',
-    'OnIterator', 'x'
-]
+__all__ = ['Function', 'function', 'identity', 'FMapOf']
 
 
 class CallContext:
@@ -46,22 +43,36 @@ class Function(Applicative):
         return Function_
 
 
-
 def function(f):
-    return Function(f)
+    return wraps(f)(Function(f))
+
 
 identity = Function(lambda _: _)
+
 
 class FMapOf(Function):
     def __call__(self, x):
         return fmap(self.f, x)
 
-class LambdaMaker:
-    def __getattr__(self, *args, **kwargs):
-        return Function(lambda _: getattr(_, *args, **kwargs))
 
-    def __getitem__(self, *args, **kwargs):
-        return Function(lambda _: _.__getitem__(*args, **kwargs))
+class args(Function):
+    def __call__(self, *args, **kwargs):
+        return args
 
-x = LambdaMaker()
 
+class kwargs(Function):
+    def __call__(self, *args, **kwargs):
+        return kwargs
+
+
+class GetAttr(Function):
+    def __init__(self, name):
+        self.name = name
+
+    def __call__(self, x):
+        return getattr(x, self.name)
+
+
+class CallAsArgs(Function):
+    def __call__(self, x):
+        return self.f(*x)
