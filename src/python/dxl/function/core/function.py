@@ -4,7 +4,8 @@ from .control import Applicative, fmap
 from abc import ABCMeta, abstractmethod
 
 
-__all__ = ['Function', 'function', 'identity', 'FMapOf']
+__all__ = ['Function', 'function', 'identity',
+           'FMapOf', 'CallAsArgs', 'args', 'kwargs']
 
 
 class CallContext:
@@ -55,14 +56,10 @@ class FMapOf(Function):
         return fmap(self.f, x)
 
 
-class args(Function):
-    def __call__(self, *args, **kwargs):
-        return args
+args = Function(lambda *args, **kwargs: args)
 
 
-class kwargs(Function):
-    def __call__(self, *args, **kwargs):
-        return kwargs
+kwargs = Function(lambda *args, **kwargs: kwargs)
 
 
 class GetAttr(Function):
@@ -75,4 +72,5 @@ class GetAttr(Function):
 
 class CallAsArgs(Function):
     def __call__(self, x):
+        print(x)
         return self.f(*x)

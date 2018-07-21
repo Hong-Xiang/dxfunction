@@ -5,8 +5,6 @@ from functools import singledispatch
 
 __all__ = ['Functor', 'fmap', 'Applicative', 'Monad', 'Monoid']
 
-BuiltInFunctor = Union[List, Tuple, Dict]
-
 
 class Functor(metaclass=ABCMeta):
     @abstractmethod
@@ -19,12 +17,11 @@ class Functor(metaclass=ABCMeta):
         pass
 
 
-FunctorB = Union[Functor, BuiltInFunctor]  # Functor and built-in "Functor"s
-
-
 @singledispatch
 def _fmap(fct, f):
     pass
+
+FunctorB = Union[List, Tuple, Dict, Functor]
 
 def fmap(f: Callable, fct: FunctorB) -> FunctorB:
     if isinstance(fct, Functor):
@@ -43,21 +40,22 @@ class Applicative(Functor, metaclass=ABCMeta):
     def run(self):
         return self.fmap(lambda f: f())
 
+
 class Monad(Applicative, metaclass=ABCMeta):
     @abstractmethod
     def __rshift__(self, f):
         pass
-    
+
+
 class Monoid(metaclass=ABCMeta):
     @abstractclassmethod
     def empty(self):
         pass
-    
+
     @abstractmethod
     def __add__(self, x):
         pass
-    
+
     @abstractclassmethod
     def concat(self, xs):
         pass
-    
