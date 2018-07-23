@@ -1,5 +1,8 @@
 from .function import Function, identity
 
+__all__ = ['x']
+
+
 class QuickLambda(Function):
 
     def __eq__(self, v):
@@ -11,5 +14,5 @@ class QuickLambda(Function):
     def __getitem__(self, *args, **kwargs):
         return QuickLambda(lambda x: self.__call__(x).__getitem__(*args, **kwargs))
 
-x = QuickLambda(identity)
 
+x = QuickLambda(identity)

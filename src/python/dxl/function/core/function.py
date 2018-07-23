@@ -1,6 +1,8 @@
 from functools import wraps, partial
 from contextlib import contextmanager
-from .control import Applicative, fmap
+from dxl.data import Applicative
+from .control import fmap
+from dxl.data.function import Function
 from abc import ABCMeta, abstractmethod
 
 
@@ -8,21 +10,13 @@ __all__ = ['Function', 'function', 'identity',
            'FMapOf', 'CallAsArgs', 'args', 'kwargs']
 
 
-class CallContext:
-    def __init__(self, f, *args, **kwargs):
-        self.args = args
-        self.kwargs = kwargs
-        self.f = f
-        self.prev = None
-
-    def __enter__(self):
-        self.prev = self.f._call_ctx()
-
-
 class Function(Applicative):
     def __init__(self, f):
         self.f = f
 
+    def lift2(self, a, b):
+        # FIXME add impl
+        ...
     def __call__(self, *args, **kwargs):
         return self.f(*args, **kwargs)
 
@@ -72,5 +66,9 @@ class GetAttr(Function):
 
 class CallAsArgs(Function):
     def __call__(self, x):
-        print(x)
         return self.f(*x)
+
+
+class Flip(Function):
+    def __call___(self, a, b):
+        return self.f(b, a)

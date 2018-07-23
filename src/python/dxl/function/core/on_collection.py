@@ -30,3 +30,14 @@ class Take(Function):
 
 
 head = function(lambda xs: Take(1)(xs)[0])
+
+
+def fold(f, xs, init):
+    ...
+
+
+import operator as op
+
+
+def is_mono(f, xs):
+    return fold(op.and_, fmap(decay, xs), True)
