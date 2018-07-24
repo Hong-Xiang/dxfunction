@@ -21,7 +21,9 @@ class Functor(metaclass=ABCMeta):
 def _fmap(fct, f):
     pass
 
+
 FunctorB = Union[List, Tuple, Dict, Functor]
+
 
 def fmap(f: Callable, fct: FunctorB) -> FunctorB:
     if isinstance(fct, Functor):
@@ -46,6 +48,10 @@ class Monad(Applicative, metaclass=ABCMeta):
     def __rshift__(self, f):
         pass
 
+    def join(self):
+        from .function import identity
+        return self >> identity
+
 
 class Monoid(metaclass=ABCMeta):
     @abstractclassmethod
@@ -59,3 +65,13 @@ class Monoid(metaclass=ABCMeta):
     @abstractclassmethod
     def concat(self, xs):
         pass
+
+
+@singledispatch
+def join(m):
+    raise TypeError(f"Can't join {type(m)}.")
+
+
+@join.register(Monad)
+def _(m):
+    return m.join()
