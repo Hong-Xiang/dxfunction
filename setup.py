@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 setup(
     name='dxl-function',
-    version='0.0.1',
+    version='0.1.1',
     description='Functional library.',
     url='https://github.com/Hong-Xiang/dxfunction',
     author='Hong Xiang',
