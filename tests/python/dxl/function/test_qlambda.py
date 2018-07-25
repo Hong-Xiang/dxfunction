@@ -1,4 +1,4 @@
-from dxl.function.core.qlambda import x
+from dxl.function.qlambda import x
 
 
 def test_getattr():

@@ -1,4 +1,5 @@
-from .function import Function, identity
+from dxl.data import Function
+from .base import identity
 
 __all__ = ['x']
 
