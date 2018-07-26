@@ -1,6 +1,6 @@
 import numpy as np
 from functools import singledispatch
-from dxl.data.tensor import Point
+from dxl.data.tensor import Tensor
 
 
 @singledispatch
@@ -13,7 +13,7 @@ def _(t, *, p=2.0):
     return np.linalg.norm(t)
 
 
-@norm.register(np.ndarray)
+@norm.register(Tensor)
 def _(t, *, p=2.0):
     return norm(t.data)
 
