@@ -1,4 +1,4 @@
-from dxl.function.core.qlambda import x
+from dxl.function.qlambda import x
 
 
 def test_getattr():
@@ -23,3 +23,11 @@ def test_eq():
 def test_chain_slice_eq():
     assert (x[1] == 3)([1, 3, 1])
     assert not (x[1] == 3)([1, 1])
+
+
+def test_add():
+    assert list(map(x + 1, [1, 2, 3])) == [2, 3, 4]
+
+
+def test_sub():
+    assert list(map(x - 1, [1, 2, 3])) == [0, 1, 2]

@@ -1,7 +1,10 @@
 import collections.abc
-from functools import singledispatch
 import operator
+from functools import singledispatch
+
 from dxl.data import Function
+
+from .base import func
 
 __all__ = ['Take', 'head']
 
@@ -30,7 +33,24 @@ def _(xs, n):
         yield from xs
 
 
-head = Function(lambda xs: Take(1)(xs)[0])
+@func
+def head(xs):
+    return _head(xs)
+
+
+@singledispatch
+def _head(xs):
+    raise TypeError
+
+
+@_head.register(collections.abc.Sequence)
+def _(xs):
+    return Take(1)(xs)[0]
+
+
+@_head.register(collections.abc.Sequence)
+def _(xs):
+    return Take(1)(xs)
 
 
 def fold(f, xs, init):
