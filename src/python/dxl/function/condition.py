@@ -28,26 +28,15 @@ class MapIf(Function):
         else:
             return x
 
+from .base import func, identity
 
-class Always(Function):
-    def __init__(self, value):
-        self.value = value
+@func
+def switch(predictor, f_true, f_false, x):
+    return f_true(x) if predictor(x) else f_false(x)
 
-    def __call__(self, *args, **kwargs):
-        return self.value
-
-
-class Switch(Function):
-    def __init__(self, cond, f_true, f_false):
-        self.cond = cond
-        self.f_true = f_true
-        self.f_false = f_false
-
-    def __call__(self, x):
-        if self.cond(x):
-            return self.f_true(x)
-        else:
-            return self.f_false(x)
+@func
+def map_if(f, predictor):
+    return switch(predictor, f, identity)
 
 
 class Filter(Function):
@@ -62,12 +51,15 @@ class Filter(Function):
         return it_()
 
 
-@function
+@func
 def is_none(x):
     return x is None
 
+@func
+def is_mono(predictor, xs):
+    return 
 
-@function
+@func
 def mono_decay(x):
     for p, s in zip(x[:-1], x[1:]):
         if p < s:

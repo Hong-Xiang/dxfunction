@@ -2,9 +2,8 @@ import collections.abc
 import operator
 from functools import singledispatch
 
-from dxl.data import Function
+from dxl.data import Function, func
 
-from .base import func
 
 __all__ = ['Take', 'head']
 
@@ -59,3 +58,26 @@ def fold(f, xs, init):
 
 def is_mono(f, xs):
     return fold(operator.and_, fmap(decay, xs), True)
+
+
+@singledispatch
+def shift_by(xs, n):
+    raise NotImplementedError(f"shift_by not implemented for {type(xs)}")
+
+
+from dxl.data import List, LazyList
+import itertools
+import collections
+
+# TODO make shift_by return iterable instead of iterator
+
+@shift_by.register(List)
+def _(xs, n=1):
+    return List([(x, y) for x, y in zip(xs, xs[1:])])
+
+
+@shift_by.register(LazyList)
+def _(xs, n=1):
+    x0, x1 = itertools.tee(xs)
+    collections.deque(x1, n)
+    return LazyList(zip(x0, x1))
