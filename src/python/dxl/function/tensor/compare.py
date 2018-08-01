@@ -14,4 +14,4 @@ def _all_close(x, y):
 
 @_all_close.register(np.ndarray)
 def _(x, y):
-    return np.allclose(x, y)
+    return np.allclose(x, y, atol=1.e-7)
